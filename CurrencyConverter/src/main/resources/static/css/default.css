@@ -1,0 +1,81 @@
+:root{
+  font-size:2.5vmin;
+}
+.form_login{
+   position: absolute;
+       left:50%;
+        top:35%;
+  transform: translate(-50%, -50%);
+}
+.form_register{
+   position: absolute;
+       left:38%;
+        top:10%;
+      right:0  
+}
+.form_converter{
+   position: absolute;
+       left:24%;
+        top:30%;
+      right:0  
+}
+.footer{
+   position: absolute;
+       left: 45%;
+     bottom: 10%;
+}
+.footer_text{
+        width: 5rem;
+  font-family: verdana;
+    font-size: 0.8rem;
+}
+#form {
+  font-family: verdana;
+}
+ 
+#submit_button{
+      display: block;
+       margin: 0 auto;
+        width: 5rem;
+  font-family: verdana;
+    font-size: 1rem;
+}
+ 
+.message{
+        width: 7rem;
+  font-family: verdana;
+    font-size: 1rem;
+}
+
+.heading{
+        width: 7rem;
+  font-family: verdana;
+    font-size: 2rem;
+  font-weight: bold;  
+}
+.result{
+	    color: blue;
+        width: 7rem;
+  font-family: arial;
+    font-size: 1rem;
+  font-weight: bold;  
+}
+.error{
+        color: #ff0000;  
+        width: 5rem;
+  font-family: verdana;
+    font-size: 0.6rem;
+}
+.error_big{
+        color: #ff0000;  
+        width: 5rem;
+  font-family: verdana;
+    font-size: 1rem;
+}
+.input{
+         border: 0.05rem solid gray;
+          width: 10rem;
+         height: 1.15rem;
+  margin-bottom: 0.25rem;
+      font-size: 0.8rem
+}

@@ -1,0 +1,1 @@
+insert into user (username, email_id, first_name, last_name, password, date_of_birth) values ('demo', 'demo@currencyconverter.com', 'demo', 'demo', '$2a$06$jG1jOqa1KwUsvb4p07id8uIU/AY058/un4heGyr3tVjVrxdip8CGy', parsedatetime('01-01-2000', 'dd-MM-yyyy'))
