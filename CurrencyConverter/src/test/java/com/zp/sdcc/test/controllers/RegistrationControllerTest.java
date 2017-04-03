@@ -56,6 +56,7 @@ public class RegistrationControllerTest {
     @MockBean
     private UserService registrationService;
     
+    
     @MockBean
     private UserValidator validator;
     
