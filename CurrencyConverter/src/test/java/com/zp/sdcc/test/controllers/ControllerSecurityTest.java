@@ -1,8 +1,8 @@
 package com.zp.sdcc.test.controllers;
 
-import static com.zp.sdcc.common.CurrencyConverterConstants.*;
+import static com.zp.sdcc.common.CurrencyConverterConstants.CURRENCY_CONVERTER_REQUEST_MAPPING;
+import static com.zp.sdcc.common.CurrencyConverterConstants.REGISTER_REQUEST_MAPPING;
 import static com.zp.sdcc.test.TestConstants.DEFAULT_USER;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -24,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.zp.sdcc.controllers.CurrencyConverterController;
-import com.zp.sdcc.controllers.LoginController;
 import com.zp.sdcc.controllers.RegistrationController;
 import com.zp.sdcc.services.AuditHistoryService;
 import com.zp.sdcc.services.CurrencyConversionDelegatorService;
@@ -34,7 +32,7 @@ import com.zp.sdcc.validators.UserValidator;
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = {CurrencyConverterController.class, RegistrationController.class}, 
             includeFilters = @Filter(classes = {EnableWebSecurity.class} ))
-public class SecurityAndExceptionMapping {
+public class ControllerSecurityTest {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -107,7 +105,7 @@ public class SecurityAndExceptionMapping {
     	ResultActions result = mockMvc.perform(get("/unknown").contentType(MediaType.TEXT_HTML));
 
     	//Assert
-    	result.andExpect(status().isNotFound());
+    	result.andExpect(status().isOk());
     }     
 	
 }

@@ -1,7 +1,9 @@
 package com.zp.sdcc.test.controllers;
 
-import static com.zp.sdcc.common.CurrencyConverterConstants.*;
+import static com.zp.sdcc.common.CurrencyConverterConstants.CURRENCY_CONVERTER_REQUEST_MAPPING;
 import static com.zp.sdcc.common.CurrencyConverterConstants.CURRENCY_CONVERTER_RESPONSE_MAPPING;
+import static com.zp.sdcc.common.CurrencyConverterConstants.EUR;
+import static com.zp.sdcc.common.CurrencyConverterConstants.GBP;
 import static com.zp.sdcc.test.TestConstants.BLANK_STRING;
 import static com.zp.sdcc.test.TestConstants.CURRENCY_CONVERTER_FORM;
 import static com.zp.sdcc.test.TestConstants.DEFAULT_USER;
@@ -73,7 +75,7 @@ public class CurrencyCoverterControllerTest {
 	
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_AmountToConvertNull_ValidationErrorOnAmountToConvert() throws Exception
+    public void postRequest_AmountToConvertNull_ValidationErrorOnAmountToConvert() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -94,7 +96,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_AmountToConvertNegativeNumber_ValidationErrorOnAmountToConvert() throws Exception
+    public void postRequest_AmountToConvertNegativeNumber_ValidationErrorOnAmountToConvert() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -115,7 +117,7 @@ public class CurrencyCoverterControllerTest {
     
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_AmountToConvertLargerThan11Digits_ValidationErrorOnAmountToConvert() throws Exception
+    public void postRequest_AmountToConvertLargerThan11Digits_ValidationErrorOnAmountToConvert() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -136,7 +138,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_AmountToConvertMoreThan2DecimalDigits_ValidationErrorOnAmountToConvert() throws Exception
+    public void postRequest_AmountToConvertMoreThan2DecimalDigits_ValidationErrorOnAmountToConvert() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -157,7 +159,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_AmountToConvertContainsInvalidCharacters_ValidationErrorOnAmountToConvert() throws Exception
+    public void postRequest_AmountToConvertContainsInvalidCharacters_ValidationErrorOnAmountToConvert() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -178,7 +180,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_AmountToConvertBlankString_ValidationErrorOnAmountToConvert() throws Exception
+    public void postRequest_AmountToConvertBlankString_ValidationErrorOnAmountToConvert() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -198,7 +200,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_SourceCurrencyBlankString_ValidationErrorOnSourceCurrency() throws Exception
+    public void postRequest_SourceCurrencyBlankString_ValidationErrorOnSourceCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -219,7 +221,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_SourceCurrencyLessThan3Characters_ValidationErrorOnSourceCurrency() throws Exception
+    public void postRequest_SourceCurrencyLessThan3Characters_ValidationErrorOnSourceCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -240,7 +242,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_SourceCurrencyMoreThan3Characters_ValidationErrorOnSourceCurrency() throws Exception
+    public void postRequest_SourceCurrencyMoreThan3Characters_ValidationErrorOnSourceCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -261,7 +263,7 @@ public class CurrencyCoverterControllerTest {
     
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_SourceCurrencyNull_ValidationErrorOnSourceCurrency() throws Exception
+    public void postRequest_SourceCurrencyNull_ValidationErrorOnSourceCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -282,7 +284,7 @@ public class CurrencyCoverterControllerTest {
  
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_TargetCurrencyNull_ValidationErrorOnTargetCurrency() throws Exception
+    public void postRequest_TargetCurrencyNull_ValidationErrorOnTargetCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -303,7 +305,7 @@ public class CurrencyCoverterControllerTest {
  
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_TargetCurrencyBlankString_ValidationErrorOnTargetCurrency() throws Exception
+    public void postRequest_TargetCurrencyBlankString_ValidationErrorOnTargetCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -324,7 +326,7 @@ public class CurrencyCoverterControllerTest {
   
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_TargetCurrencyLessThan3Characters_ValidationErrorOnTargetCurrency() throws Exception
+    public void postRequest_TargetCurrencyLessThan3Characters_ValidationErrorOnTargetCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -345,7 +347,7 @@ public class CurrencyCoverterControllerTest {
     
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_TargetCurrencyMoreThan3Characters_ValidationErrorOnTargetCurrency() throws Exception
+    public void postRequest_TargetCurrencyMoreThan3Characters_ValidationErrorOnTargetCurrency() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();
@@ -367,11 +369,10 @@ public class CurrencyCoverterControllerTest {
  
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void getRegister_NoParamters_ForwardsToCurrencyConverterPageNoErrors() throws Exception
+    public void getRequest_NoParamters_ForwardsToCurrencyConverterPageNoErrors() throws Exception
     {
     	//Arrange
     	mockAuditHistory();
-    	
     	
     	//Act
     	ResultActions result = mockMvc.perform(get(CURRENCY_CONVERTER_REQUEST_MAPPING));
@@ -388,7 +389,7 @@ public class CurrencyCoverterControllerTest {
 
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_NoParamters_ForwardsToCurrencyConverterPageWithErrors() throws Exception
+    public void postRequest_NoParamters_ForwardsToCurrencyConverterPageWithErrors() throws Exception
     {
     	//Arrange
     	mockAuditHistory();
@@ -409,7 +410,7 @@ public class CurrencyCoverterControllerTest {
     
     @Test
     @WithMockUser(username = DEFAULT_USER)
-    public void postRegister_ValidParamters_ReturnsResult() throws Exception
+    public void postRequest_ValidParamters_ReturnsResult() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = populateRequestParameters();

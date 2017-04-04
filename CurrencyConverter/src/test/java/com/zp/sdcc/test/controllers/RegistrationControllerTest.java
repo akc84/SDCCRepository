@@ -64,7 +64,7 @@ public class RegistrationControllerTest {
 
 
     @Test
-    public void postRegister_UsernameSingleCharacter_ValidationErrorOnUsername() throws Exception
+    public void postRequest_UsernameSingleCharacter_ValidationErrorOnUsername() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -82,7 +82,7 @@ public class RegistrationControllerTest {
     }    
 
     @Test
-    public void postRegister_UsernameBlankString_ValidationErrorOnUsername() throws Exception
+    public void postRequest_UsernameBlankString_ValidationErrorOnUsername() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -99,7 +99,7 @@ public class RegistrationControllerTest {
     }        
     
     @Test
-    public void postRegister_UsernameLongerThan12Characters_ValidationErrorOnUsername() throws Exception
+    public void postRequest_UsernameLongerThan12Characters_ValidationErrorOnUsername() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -117,7 +117,7 @@ public class RegistrationControllerTest {
     }    
     
     @Test
-    public void postRegister_UsernameNull_ValidationErrorOnUsername() throws Exception
+    public void postRequest_UsernameNull_ValidationErrorOnUsername() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -134,7 +134,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void postRegister_PasswordNull_ValidationErrorOnPassword() throws Exception
+    public void postRequest_PasswordNull_ValidationErrorOnPassword() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -151,7 +151,7 @@ public class RegistrationControllerTest {
     }    
  
     @Test
-    public void postRegister_PasswordBlankString_ValidationErrorOnPassword() throws Exception
+    public void postRequest_PasswordBlankString_ValidationErrorOnPassword() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -169,7 +169,7 @@ public class RegistrationControllerTest {
     }
     
     @Test
-    public void postRegister_EmailIdNull_ValidationErrorOnEmailId() throws Exception
+    public void postRequest_EmailIdNull_ValidationErrorOnEmailId() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -186,7 +186,7 @@ public class RegistrationControllerTest {
     }
  
     @Test
-    public void postRegister_EmailIdInvalid_ValidationErrorOnEmailId() throws Exception
+    public void postRequest_EmailIdInvalid_ValidationErrorOnEmailId() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -204,7 +204,7 @@ public class RegistrationControllerTest {
     }   
 
     @Test
-    public void postRegister_EmailIdBlankString_ValidationErrorOnEmailId() throws Exception
+    public void postRequest_EmailIdBlankString_ValidationErrorOnEmailId() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -221,7 +221,7 @@ public class RegistrationControllerTest {
     }
     
     @Test
-    public void postRegister_DateOfBirthBlankString_ValidationErrorDateOfBirth() throws Exception
+    public void postRequest_DateOfBirthBlankString_ValidationErrorDateOfBirth() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -238,7 +238,7 @@ public class RegistrationControllerTest {
     }
     
     @Test
-    public void postRegister_DateOfBirthInCorrectFormat_ValidationErrorDateOfBirth() throws Exception
+    public void postRequest_DateOfBirthInCorrectFormat_ValidationErrorDateOfBirth() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -255,7 +255,7 @@ public class RegistrationControllerTest {
     }  
 
     @Test
-    public void postRegister_DateOfBirthInvalidValue_ValidationErrorDateOfBirth() throws Exception
+    public void postRequest_DateOfBirthInvalidValue_ValidationErrorDateOfBirth() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -272,7 +272,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void postRegister_DateOfBirthNull_ValidationErrorDateOfBirth() throws Exception
+    public void postRequest_DateOfBirthNull_ValidationErrorDateOfBirth() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -289,7 +289,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void postRegister_DateOfBirthFuture_ValidationErrorDateOfBirth() throws Exception
+    public void postRequest_DateOfBirthFuture_ValidationErrorDateOfBirth() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -306,7 +306,7 @@ public class RegistrationControllerTest {
     }
  
     @Test
-    public void postRegister_addressLine1Null_ValidationErrorAddressLine1() throws Exception
+    public void postRequest_addressLine1Null_ValidationErrorAddressLine1() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -323,7 +323,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void postRegister_addressLine1BlankString_ValidationErrorAddressLine1() throws Exception
+    public void postRequest_addressLine1BlankString_ValidationErrorAddressLine1() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -340,7 +340,7 @@ public class RegistrationControllerTest {
     }
     
     @Test
-    public void postRegister_CityNull_ValidationErrorCity() throws Exception
+    public void postRequest_CityNull_ValidationErrorCity() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -357,7 +357,7 @@ public class RegistrationControllerTest {
     }    
 
     @Test
-    public void postRegister_CityBlankString_ValidationErrorCity() throws Exception
+    public void postRequest_CityBlankString_ValidationErrorCity() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -374,7 +374,7 @@ public class RegistrationControllerTest {
     }        
     
     @Test
-    public void postRegister_ZipCodeNull_ValidationErrorZipCode() throws Exception
+    public void postRequest_ZipCodeNull_ValidationErrorZipCode() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -391,7 +391,7 @@ public class RegistrationControllerTest {
     }    
 
     @Test
-    public void postRegister_ZipCodeBlankString_ValidationErrorZipCode() throws Exception
+    public void postRequest_ZipCodeBlankString_ValidationErrorZipCode() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -408,7 +408,7 @@ public class RegistrationControllerTest {
     }     
     
     @Test
-    public void postRegister_CountryNull_ValidationErrorCountry() throws Exception
+    public void postRequest_CountryNull_ValidationErrorCountry() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -425,7 +425,7 @@ public class RegistrationControllerTest {
     }     
 
     @Test
-    public void postRegister_CountryBlankString_ValidationErrorCountry() throws Exception
+    public void postRequest_CountryBlankString_ValidationErrorCountry() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -442,7 +442,7 @@ public class RegistrationControllerTest {
     }         
     
     @Test
-    public void postRegister_FirstNameNull_ValidationErrorFirstName() throws Exception
+    public void postRequest_FirstNameNull_ValidationErrorFirstName() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -459,7 +459,7 @@ public class RegistrationControllerTest {
     }    
 
     @Test
-    public void postRegister_FirstNameBlankString_ValidationErrorFirstName() throws Exception
+    public void postRequest_FirstNameBlankString_ValidationErrorFirstName() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
@@ -476,7 +476,7 @@ public class RegistrationControllerTest {
     }      
     
     @Test
-    public void postRegister_NoParameters_ReturnsRegistrationPageWithErrors() throws Exception
+    public void postRequest_NoParameters_ReturnsRegistrationPageWithErrors() throws Exception
     {
     	//Arrange
     	//NOOP
@@ -514,7 +514,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void postRegister_ValidParameters_ForwardsToLoginPageNoErrors() throws Exception
+    public void postRequest_ValidParameters_ForwardsToLoginPageNoErrors() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
