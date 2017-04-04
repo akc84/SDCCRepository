@@ -5,6 +5,7 @@ import java.util.Date;
 public class AuditEntry {
 
 	private String queryString;
+
 	private Date queryDate;
 
 	public AuditEntry() {

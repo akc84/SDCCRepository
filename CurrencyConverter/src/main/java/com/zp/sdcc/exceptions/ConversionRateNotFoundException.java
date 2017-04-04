@@ -13,6 +13,12 @@ public class ConversionRateNotFoundException extends Exception{
 		super(String.format("Exchange rate unavailable from %s to %s as on %s", params[1], params[2], params[0]));
 	}
 
+	public ConversionRateNotFoundException(String message)
+	{
+		super(message);
+	}	
+	
+	
 	public String toString()
 	{
 		return this.getMessage();

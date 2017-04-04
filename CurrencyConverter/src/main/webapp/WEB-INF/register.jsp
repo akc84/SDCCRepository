@@ -36,7 +36,7 @@
                <td><form:errors cssClass="error" path="password"/></td>               
             </tr>           
             <tr>
-               <td><label class="message">Re-Password</label></td>
+               <td><label class="message">Confirm Password</label></td>
                <td><form:input cssClass="input" path="confirmPassword" type="password" maxlength="18" name="confirmPassword"/></td>
                <td><form:errors cssClass="error" path="confirmPassword"/></td> 
             </tr>

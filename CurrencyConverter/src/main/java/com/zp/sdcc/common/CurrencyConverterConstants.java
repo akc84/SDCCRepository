@@ -50,5 +50,7 @@ public class CurrencyConverterConstants {
 	public static final String MESSAGE = "message";	
 	
 	public static final String REGISTRATION_SUCCESS_MESSAGE = "Registration Successful. Please login to proceed";
+	
+	public static final String SUPPORTED_DATE_FORMAT = "yyyy-MM-dd";
 
 }

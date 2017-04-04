@@ -53,7 +53,7 @@
                <td><span class="message">=></span></td>
                <td><form:select cssClass="input" path="targetCurrency" items="${supportedCurrencies}"/></td>
                <td><span class="message">as on</span> </td>
-               <td><form:input cssClass="input" path="conversionDate" name="conversionDate" maxlength="10"/></td>
+               <td><form:input cssClass="input" path="conversionDate" placeholder="yyyy-MM-dd" name="conversionDate" maxlength="10"/></td>
             </tr>         
             <tr>
                <td colspan = "6" align="center">
