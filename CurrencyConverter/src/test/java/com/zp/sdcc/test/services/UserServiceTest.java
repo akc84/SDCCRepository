@@ -1,5 +1,8 @@
 package com.zp.sdcc.test.services;
 
+import static com.zp.sdcc.common.CurrencyConverterConstants.PASSWORD;
+import static com.zp.sdcc.test.TestConstants.TEST_USER_NAME;
+import static com.zp.sdcc.test.TestConstants.TEST_USER_NAME2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -37,8 +40,8 @@ public class UserServiceTest {
 	public void registerUser_ValidUser_ReturnsRegisteredUser(){
 		//Arrange
 		User user = new User();
-		user.setUsername("john");
-		user.setPassword("password");
+		user.setUsername(TEST_USER_NAME);
+		user.setPassword(PASSWORD);
 		Address address = new Address();
 		user.setAddress(address);
 		
@@ -49,7 +52,7 @@ public class UserServiceTest {
 		User returnedUser = userService.registerUser(user);
 		
 		//Assert
-		assertThat("john").isEqualTo(returnedUser.getUsername());
+		assertThat(TEST_USER_NAME).isEqualTo(returnedUser.getUsername());
 	}
 	
 
@@ -57,10 +60,10 @@ public class UserServiceTest {
 	public void isUsernameAvailable_ExistingUsername_ReturnsFalse()
 	{
 		//Arrange
-		when(userRepository.exists("jane")).thenReturn(Boolean.TRUE);
+		when(userRepository.exists(TEST_USER_NAME2)).thenReturn(Boolean.TRUE);
 		
 		//Act
-		boolean result = userService.isUsernameAvailable("jane");
+		boolean result = userService.isUsernameAvailable(TEST_USER_NAME2);
 		
 		//Assert
 		assertThat(result).isFalse();
@@ -71,10 +74,10 @@ public class UserServiceTest {
 	public void isUsernameAvailable_NewUsername_ReturnsTrue()
 	{
     	//Arrange
-    	when(userRepository.exists("john")).thenReturn(Boolean.FALSE);
+    	when(userRepository.exists(TEST_USER_NAME)).thenReturn(Boolean.FALSE);
     	
     	//Act
-    	boolean result = userService.isUsernameAvailable("john");
+    	boolean result = userService.isUsernameAvailable(TEST_USER_NAME);
     	
     	//Assert
     	assertThat(result).isTrue();

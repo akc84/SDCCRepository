@@ -1,6 +1,7 @@
 package com.zp.sdcc.test.services;
 
 import static com.zp.sdcc.common.CurrencyConverterUtil.getFormattedDate;
+import static com.zp.sdcc.common.CurrencyConverterConstants.*;
 import static com.zp.sdcc.test.TestConstants.DEFAULT_USER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyObject;
@@ -48,7 +49,7 @@ public class CurrencyConversionDelegatorServiceTest {
     public void performCurrencyConversion_SourceAndTargetCurrencySame_ReturnsSameAmount() throws ConversionRateNotFoundException, ExternalServiceNotRespondingException
     {
 		//Arrange
-		CurrencyConversionVO input = new CurrencyConversionVO("EUR",new BigDecimal(1.00),"EUR",null);
+		CurrencyConversionVO input = new CurrencyConversionVO(EUR,new BigDecimal(1.00),EUR,null);
 		input.setConvertedAmount(null);
 		
 		//Act
@@ -64,7 +65,7 @@ public class CurrencyConversionDelegatorServiceTest {
     {
 		//Arrange
     	BigDecimal amountToConvert = new BigDecimal(1.00);
-		CurrencyConversionVO input = new CurrencyConversionVO("EUR",amountToConvert,"USD",null);
+		CurrencyConversionVO input = new CurrencyConversionVO(EUR,amountToConvert,USD,null);
 		
 		BigDecimal mockedExchangeRate = new BigDecimal(1.32);
 		when(externalService.getCurrencyExchangeRate(anyObject())).thenReturn(mockedExchangeRate);
@@ -82,7 +83,7 @@ public class CurrencyConversionDelegatorServiceTest {
     {
 		//Arrange
     	Date date = new Date();
-		CurrencyConversionVO input = new CurrencyConversionVO("EUR",new BigDecimal(1.00),"USD",date);
+		CurrencyConversionVO input = new CurrencyConversionVO(EUR,new BigDecimal(1.00),USD,date);
 		
 		when(externalService.getCurrencyExchangeRate(anyObject())).thenReturn(new BigDecimal(1.32));    	
 		
@@ -94,7 +95,7 @@ public class CurrencyConversionDelegatorServiceTest {
 		
 		//Assert
 		verify(externalService).getCurrencyExchangeRate(argCaptor.capture());
-		assertThat(argCaptor.getValue()).isEqualTo(new String[]{getFormattedDate(date),"EUR","USD"});
+		assertThat(argCaptor.getValue()).isEqualTo(new String[]{getFormattedDate(date),EUR,USD});
     }
 
     
@@ -102,7 +103,7 @@ public class CurrencyConversionDelegatorServiceTest {
     public void performCurrencyConversion_SourceAndTargetCurrencyNotSame_SendsParametersToAuditService() throws ConversionRateNotFoundException, ExternalServiceNotRespondingException
     {
 		//Arrange
-		CurrencyConversionVO input = new CurrencyConversionVO("EUR",new BigDecimal(1.00),"USD",null);
+		CurrencyConversionVO input = new CurrencyConversionVO(EUR,new BigDecimal(1.00),USD,null);
 		
 		when(externalService.getCurrencyExchangeRate(anyObject())).thenReturn(new BigDecimal(1.32));    	
 		when(userService.findLoggedInUsername()).thenReturn(DEFAULT_USER);

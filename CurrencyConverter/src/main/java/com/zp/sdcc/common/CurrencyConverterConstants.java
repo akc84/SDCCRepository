@@ -31,6 +31,8 @@ public class CurrencyConverterConstants {
 
 	public static final String EUR = "EUR";	
 	
+	public static final String USD = "USD";	
+	
 	public static final String RESULT = "result";
 
 	public static final String QUERY_HISTORY = "queryHistory";

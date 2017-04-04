@@ -1,5 +1,8 @@
 package com.zp.sdcc.test.services;
 
+import static com.zp.sdcc.common.CurrencyConverterConstants.PASSWORD;
+import static com.zp.sdcc.test.TestConstants.TEST_USER_NAME;
+import static com.zp.sdcc.test.TestConstants.TEST_USER_NAME2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,14 +40,14 @@ public class UserDetailsServiceTest {
 	public void loadUserByUsername_ExistingUsername_ReturnsUserDetails(){
 
 		//Arrange
-		User user = createUser("jane", "password");
-		when(userRepository.findOne("jane")).thenReturn(user);
+		User user = createUser(TEST_USER_NAME2, PASSWORD);
+		when(userRepository.findOne(TEST_USER_NAME2)).thenReturn(user);
 		
 		//Act
-		UserDetails result = userDetailsService.loadUserByUsername("jane");
+		UserDetails result = userDetailsService.loadUserByUsername(TEST_USER_NAME2);
 		
 		//Assert
-		assertThat(result.getPassword()).isEqualTo("password");		
+		assertThat(result.getPassword()).isEqualTo(PASSWORD);		
 		
 	}
 
@@ -53,11 +56,11 @@ public class UserDetailsServiceTest {
 	public void loadUserByUsername_NewUsername_ThrowsUsernameNotFoundException(){
 
 		//Arrange
-		when(userRepository.findOne("john")).thenReturn(null);
+		when(userRepository.findOne(TEST_USER_NAME)).thenReturn(null);
 		thrown.expect(UsernameNotFoundException.class);
 		
 		//Act
-		userDetailsService.loadUserByUsername("john");
+		userDetailsService.loadUserByUsername(TEST_USER_NAME);
 		
 		//Assert
 		//the thrown exception

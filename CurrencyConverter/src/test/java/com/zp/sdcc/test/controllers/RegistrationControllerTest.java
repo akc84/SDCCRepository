@@ -56,7 +56,6 @@ public class RegistrationControllerTest {
     @MockBean
     private UserService registrationService;
     
-    
     @MockBean
     private UserValidator validator;
     
@@ -549,10 +548,10 @@ public class RegistrationControllerTest {
 	
 	private void addAddressDetails(MultiValueMap<String,String> requestParameters) {
 		requestParameters.put(FORM_FIELD_ADDRESS_LINE1,Arrays.asList("addressLine1"));
-		requestParameters.put("address.street",Arrays.asList("streetName"));
+		//requestParameters.put("address.street",Arrays.asList("streetName"));
 		requestParameters.put(FORM_FIELD_CITY, Arrays.asList("cityName"));
 		requestParameters.put(FORM_FIELD_ZIP_CODE,Arrays.asList("Zip001"));
-		requestParameters.put("address.state", Arrays.asList("state"));
+		//requestParameters.put("address.state", Arrays.asList("state"));
 		requestParameters.put(FORM_FIELD_COUNTRY, Arrays.asList("country"));
 	}	
 }

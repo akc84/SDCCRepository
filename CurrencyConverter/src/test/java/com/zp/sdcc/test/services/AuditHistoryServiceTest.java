@@ -1,6 +1,8 @@
 package com.zp.sdcc.test.services;
 
 import static com.zp.sdcc.common.CurrencyConverterConstants.AUDIT_ENTRIES_MAX_SIZE;
+import static com.zp.sdcc.test.TestConstants.TEST_QUERY_STRING;
+import static com.zp.sdcc.test.TestConstants.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -31,9 +33,6 @@ public class AuditHistoryServiceTest {
     	auditHistoryService = new AuditHistoryServiceImpl(auditHistoryRepository);
     }
 	
-	private final String TEST_USER_NAME = "john";
-	
-	private final String TEST_QUERY_STRING = "NewlyInsertedQueryString";
 	
     @Test
 	public void addAuditEntry_UserWithNoPreviousAuditHistory_AuditEntryListSizeIsOne(){

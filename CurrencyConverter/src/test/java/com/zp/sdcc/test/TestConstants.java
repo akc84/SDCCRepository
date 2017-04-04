@@ -48,4 +48,10 @@ public class TestConstants {
 
 	public static final String CURRENCY_CONVERTER_FORM = "currencyConverterForm";
 	
+	public static final String TEST_USER_NAME = "john";
+	
+	public static final String TEST_USER_NAME2 = "jane";
+	
+	public static final String TEST_QUERY_STRING = "NewlyInsertedQueryString";	
+	
 }
