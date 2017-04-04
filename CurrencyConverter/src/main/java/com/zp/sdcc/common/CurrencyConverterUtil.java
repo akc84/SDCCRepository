@@ -18,7 +18,7 @@ public class CurrencyConverterUtil {
 	public static String getFormattedAmount(BigDecimal amountToFormat)
 	{
 		return Optional.ofNullable(amountToFormat).map((p)->{ p = p.setScale(2, RoundingMode.HALF_UP); 
-															  return String.format("%1$17s", new DecimalFormat("0.00").format(p));})
+		return String.format("%1$17s", new DecimalFormat("0.00").format(p));})
 												  .orElse(null);
 	}
 
