@@ -121,11 +121,11 @@
 		    	<configuration>
 		    		<excludes>
  			   			<!-- exclude CUCUMBER Tests from Travis execution -->
-        				<exclude>**/CucumberTest.java</exclude>
-        				<exclude>**/CurrencyConverterSteps.java</exclude>
+        				<exclude>**.it.**/*.java</exclude>
+        				<!-- exclude>**/CurrencyConverterSteps.java</exclude>
         				<exclude>**/LoginFeatureSteps.java</exclude>
         				<exclude>**/RegisterFeatureSteps.java</exclude>
-        				<exclude>**/AbstractStepDef.java</exclude>
+        				<exclude>**/AbstractStepDef.java</exclude-->
     				</excludes>
     			</configuration>
 			</plugin>			
