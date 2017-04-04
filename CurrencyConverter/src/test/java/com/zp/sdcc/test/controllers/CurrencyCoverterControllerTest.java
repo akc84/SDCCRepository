@@ -383,7 +383,7 @@ public class CurrencyCoverterControllerTest {
     		  .andExpect(model().hasNoErrors())
     		  .andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
     		  .andExpect(handler().handlerType(CurrencyConverterController.class))
-    		  .andExpect(handler().methodName("currencyConversionMapping"))
+    		  .andExpect(handler().methodName("currencyConverterMapping"))
     		  .andExpect(forwardedUrl("/WEB-INF/currencyConverter.jsp"));
     }     
 

@@ -115,6 +115,23 @@ public class RegistrationControllerTest {
     														FORM_FIELD_USERNAME, 
     														ERROR_SIZE));
     }    
+
+    public void postRequest_UsernameNotAlphaNumeric_ValidationErrorOnUsername() throws Exception
+    {
+    	//Arrange
+    	MultiValueMap<String,String> requestParameters = createRequestParameterStub();
+    	requestParameters.put(FORM_FIELD_USERNAME, Arrays.asList("abcdef#"));
+    	
+    	//Act
+    	ResultActions result = mockMvc.perform(post(REGISTER_REQUEST_MAPPING)
+    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    										   .params(requestParameters));
+
+    	//Assert
+    	result.andExpect(model().attributeHasFieldErrorCode(REGISTRATION_FORM, 
+    														FORM_FIELD_USERNAME, 
+    														"Pattern"));
+    }      
     
     @Test
     public void postRequest_UsernameNull_ValidationErrorOnUsername() throws Exception
@@ -130,9 +147,10 @@ public class RegistrationControllerTest {
 
     	//Assert
     	result.andExpect(model().attributeHasFieldErrors(REGISTRATION_FORM, 
-    														FORM_FIELD_USERNAME));
+    													 FORM_FIELD_USERNAME));
     }
-
+    
+    
     @Test
     public void postRequest_PasswordNull_ValidationErrorOnPassword() throws Exception
     {
@@ -238,7 +256,7 @@ public class RegistrationControllerTest {
     }
     
     @Test
-    public void postRequest_DateOfBirthInCorrectFormat_ValidationErrorDateOfBirth() throws Exception
+    public void postRequest_DateOfBirthWrongFormat_ValidationErrorDateOfBirth() throws Exception
     {
     	//Arrange
     	MultiValueMap<String,String> requestParameters = createRequestParameterStub();

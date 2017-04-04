@@ -46,7 +46,7 @@ public class CurrencyConverterController {
 	
 	
 	@GetMapping(value = {ROOT_MAPPING,CURRENCY_CONVERTER_REQUEST_MAPPING})
-	public String currencyConversionMapping(ModelMap model)
+	public String currencyConverterMapping(ModelMap model)
 	{
 		return defaultHandler(model);
 	}
