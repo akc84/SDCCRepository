@@ -114,20 +114,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-    			<groupId>org.apache.maven.plugins</groupId>
-    			<artifactId>maven-surefire-plugin</artifactId>  		
-		    	<configuration>
-		    		<excludes>
- 			   			<!-- exclude CUCUMBER Tests from Travis execution -->
-        				<exclude>**/CucumberTest.java</exclude>
-        				<exclude>**/CurrencyConverterSteps.java</exclude>
-        				<exclude>**/LoginFeatureSteps.java</exclude>
-        				<exclude>**/RegisterFeatureSteps.java</exclude>
-        				<exclude>**/AbstractStepDef.java</exclude>
-    				</excludes>
-    			</configuration>
 			</plugin>			
 		</plugins>
 	</build>
