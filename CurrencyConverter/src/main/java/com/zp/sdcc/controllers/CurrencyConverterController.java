@@ -72,7 +72,7 @@ public class CurrencyConverterController {
 			model.put(RESULT, result);
 		} catch (ConversionRateNotFoundException | ExternalServiceNotRespondingException e) {
 			model.put(ERROR, e.toString());
-			logger.error("Exception caught::", e.getClass());
+			logger.error("Exception caught::", e.getMessage());
 		}
 	}
 
