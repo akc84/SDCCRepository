@@ -1,4 +1,4 @@
 language: java
-script: mvn test -f ./CurrencyConverter/pom.xml
+script: mvn test -f ./CurrencyConverter/pom-travis.xml
 jdk:
   - oraclejdk8
