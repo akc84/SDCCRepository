@@ -116,6 +116,7 @@ public class RegistrationControllerTest {
     														ERROR_SIZE));
     }    
 
+    @Test
     public void postRequest_UsernameNotAlphaNumeric_ValidationErrorOnUsername() throws Exception
     {
     	//Arrange
