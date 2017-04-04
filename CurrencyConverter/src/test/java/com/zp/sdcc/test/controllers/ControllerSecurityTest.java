@@ -105,7 +105,7 @@ public class ControllerSecurityTest {
     	ResultActions result = mockMvc.perform(get("/unknown").contentType(MediaType.TEXT_HTML));
 
     	//Assert
-    	result.andExpect(status().isOk());
+    	result.andExpect(status().isNotFound());
     }     
 	
 }
