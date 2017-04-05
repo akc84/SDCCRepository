@@ -27,52 +27,50 @@ import com.zp.sdcc.entities.User;
 import com.zp.sdcc.services.UserService;
 import com.zp.sdcc.validators.UserValidator;
 
+/**
+ * @author AKC
+ * Controller to handle get and post requests to /register.
+ */
 @Controller
 public class RegistrationController {
 
 	private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
-	
+
 	@Autowired
 	UserService registrationService;
-	
+
 	@Autowired
 	UserValidator validator;
-	
-	@Value("#{'${country.list}'.split(',')}") 
-	private List<String> countryList;
-		
-	@GetMapping(value = REGISTER_REQUEST_MAPPING)
-	public String registerMapping(ModelMap model)
-	{
-		return defaultHandler(model);
-	}	
 
+	@Value("#{'${country.list}'.split(',')}")
+	private List<String> countryList;
+
+	@GetMapping(value = REGISTER_REQUEST_MAPPING)
+	public String registerMapping(ModelMap model) {
+		return defaultHandler(model);
+	}
 
 	@PostMapping(value = REGISTER_REQUEST_MAPPING)
 	public String handleRegistrationRequest(@ModelAttribute(FORM_REGISTRATION) @Valid User registrationForm,
-											BindingResult bindingResult,
-						  			 		ModelMap model)
-	{
+											BindingResult bindingResult, ModelMap model) {
+		
 		validator.validate(registrationForm, bindingResult);
-		
-		if(bindingResult.hasErrors())
-		{
-			bindingResult.getAllErrors().stream().forEach(p->logger.error(p.toString()));
+
+		if (bindingResult.hasErrors()) {
+			bindingResult.getAllErrors().stream().forEach(p -> logger.error(p.toString()));
 			return defaultHandler(model);
-		}		
-		
+		}
+
 		registrationService.registerUser(registrationForm);
-		
+
 		model.put(MESSAGE, REGISTRATION_SUCCESS_MESSAGE);
-		return LOGIN_RESPONSE_MAPPING;		
+		return LOGIN_RESPONSE_MAPPING;
 	}
 
-
-	private String defaultHandler(ModelMap model) 
-	{
+	private String defaultHandler(ModelMap model) {
 		model.addAttribute(COUNTRY_LIST, countryList);
 		model.putIfAbsent(FORM_REGISTRATION, new User());
 		return REGISTER_RESPONSE_MAPPING;
-	}	
-	
+	}
+
 }

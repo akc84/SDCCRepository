@@ -21,41 +21,42 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class User {      
+public class User {
 
 	@Id
 	@NotBlank
-	@Size(min=4, max=12)
-	@Pattern(regexp ="^[A-Za-z0-9]*$")
+	@Size(min = 4, max = 12)
+	@Pattern(regexp = "^[A-Za-z0-9]*$")
 	private String username;
-	
+
 	@NotBlank
 	private String password;
-	
+
 	@Transient
 	private String confirmPassword;
-	
+
 	@NotBlank
-	@Size(max=30)
+	@Size(max = 30)
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	@Email
 	@NotBlank
 	private String emailId;
-    
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-    @NotNull @Past
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
+	@Past
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
-	
-	@OneToOne(mappedBy="user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Valid
 	private Address address;
-	
-	//getters and setters
-	
+
+	// getters and setters
+
 	public String getUsername() {
 		return username;
 	}

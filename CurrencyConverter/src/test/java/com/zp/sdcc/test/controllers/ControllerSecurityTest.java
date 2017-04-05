@@ -3,6 +3,7 @@ package com.zp.sdcc.test.controllers;
 import static com.zp.sdcc.common.CurrencyConverterConstants.CURRENCY_CONVERTER_REQUEST_MAPPING;
 import static com.zp.sdcc.common.CurrencyConverterConstants.REGISTER_REQUEST_MAPPING;
 import static com.zp.sdcc.test.TestConstants.DEFAULT_USER;
+import static com.zp.sdcc.test.TestConstants.WEB_INF_REGISTER_JSP;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -30,82 +31,71 @@ import com.zp.sdcc.services.UserService;
 import com.zp.sdcc.validators.UserValidator;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = {CurrencyConverterController.class, RegistrationController.class}, 
-            includeFilters = @Filter(classes = {EnableWebSecurity.class} ))
+@WebMvcTest(value = { CurrencyConverterController.class,
+		RegistrationController.class }, includeFilters = @Filter(classes = { EnableWebSecurity.class }))
 public class ControllerSecurityTest {
 
 	@Autowired
 	MockMvc mockMvc;
-	
+
 	@MockBean
 	CurrencyConversionDelegatorService currencyServiceDelegator;
-	
+
 	@MockBean
 	UserService userService;
-	
+
 	@MockBean
 	AuditHistoryService auditHistoryService;
-	
-    @MockBean
-    private UserDetailsService userDetailsService;
-    
-    @MockBean
-    private UserValidator validator;
-    
-    @Test
-    public void getRequestToCurrencyConverter_NoAuthentication_RedirectsToLogin() throws Exception
-    {
-    	//Arrange
 
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(get(CURRENCY_CONVERTER_REQUEST_MAPPING));
+	@MockBean
+	private UserDetailsService userDetailsService;
 
-    	//Assert
-    	result.andExpect(status().is3xxRedirection())
-    		  .andExpect(redirectedUrl("http://localhost/login"));
-    }
-    
-    @Test
-    public void getRequestToRegister_NoAuthentication_ForwardsToRegistrationPage() throws Exception
-    {
-    	//Arrange
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(get(REGISTER_REQUEST_MAPPING));
+	@MockBean
+	private UserValidator validator;
 
-    	//Assert
-    	result.andExpect(status().isOk())
-    		  .andExpect(forwardedUrl("/WEB-INF/register.jsp"));
-    }
-    
-    @Test
-    public void getRequestToUnknownResource_NoAuthentication_RedirectsToLogin() throws Exception
-    {
-    	//Arrange
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(get("/unknown").contentType(MediaType.TEXT_HTML));
-        
-    	//Assert
-    	result.andExpect(status().is3xxRedirection())
-		  .andExpect(redirectedUrl("http://localhost/login"));
-    }  
-    
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void getRequestToUnknownResource_WithAuthentication_ReturnsNotFound() throws Exception
-    {
-    	//Arrange
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(get("/unknown").contentType(MediaType.TEXT_HTML));
+	@Test
+	public void getRequestToCurrencyConverter_NoAuthentication_RedirectsToLogin() throws Exception {
+		// Arrange
 
-    	//Assert
-    	result.andExpect(status().isNotFound());
-    }     
-	
+		// Act
+		ResultActions result = mockMvc.perform(get(CURRENCY_CONVERTER_REQUEST_MAPPING));
+
+		// Assert
+		result.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@Test
+	public void getRequestToRegister_NoAuthentication_ForwardsToRegistrationPage() throws Exception {
+		// Arrange
+
+		// Act
+		ResultActions result = mockMvc.perform(get(REGISTER_REQUEST_MAPPING));
+
+		// Assert
+		result.andExpect(status().isOk()).andExpect(forwardedUrl(WEB_INF_REGISTER_JSP));
+	}
+
+	@Test
+	public void getRequestToUnknownResource_NoAuthentication_RedirectsToLogin() throws Exception {
+		// Arrange
+
+		// Act
+		ResultActions result = mockMvc.perform(get("/unknown").contentType(MediaType.TEXT_HTML));
+
+		// Assert
+		result.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("http://localhost/login"));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void getRequestToUnknownResource_WithAuthentication_ReturnsNotFound() throws Exception {
+		// Arrange
+
+		// Act
+		ResultActions result = mockMvc.perform(get("/unknown").contentType(MediaType.TEXT_HTML));
+
+		// Assert
+		result.andExpect(status().isNotFound());
+	}
+
 }

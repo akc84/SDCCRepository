@@ -1,5 +1,7 @@
 package com.zp.sdcc.it.cucumber.steps;
 
+import static com.zp.sdcc.common.CurrencyConverterConstants.PASSWORD;
+import static com.zp.sdcc.common.CurrencyConverterConstants.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -29,16 +31,16 @@ public class LoginFeatureSteps extends AbstractStepDef
 	@When("^the following correct credentials are entered and submit is clicked$")
     public void whenSuccessfulLogin(List<List<String>> loginInfo)
     {
-		browser.findElement(By.name("username")).sendKeys(loginInfo.get(1).get(0));
-		browser.findElement(By.name("password")).sendKeys(loginInfo.get(1).get(1));
+		browser.findElement(By.name(USERNAME)).sendKeys(loginInfo.get(1).get(0));
+		browser.findElement(By.name(PASSWORD)).sendKeys(loginInfo.get(1).get(1));
 		browser.findElement(By.name("submit")).click();
     }	
 
 	@When("^following incorrect credentials are entered and submit is clicked$")
     public void whenUnsuccessfulLogin(List<List<String>> loginInfo)
     {
-		browser.findElement(By.name("username")).sendKeys(loginInfo.get(1).get(0));
-		browser.findElement(By.name("password")).sendKeys(loginInfo.get(1).get(1));
+		browser.findElement(By.name(USERNAME)).sendKeys(loginInfo.get(1).get(0));
+		browser.findElement(By.name(PASSWORD)).sendKeys(loginInfo.get(1).get(1));
 		browser.findElement(By.name("submit")).click();
 		
     }	

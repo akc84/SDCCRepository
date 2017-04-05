@@ -19,11 +19,15 @@ import org.springframework.web.client.RestTemplate;
 import com.zp.sdcc.exceptions.ConversionRateNotFoundException;
 import com.zp.sdcc.exceptions.ExternalServiceNotRespondingException;
 
+/**
+ * @author AKC
+ * Adapter for fixer.io foreign exchange rate Service
+ */
 @Service
 public class FixerIOServiceAdapterImpl implements ExternalCurrencyServiceAdapter {
 
 	private static final String JSON_RATE_KEY = "rates";
-	
+
 	private static final String MIN_SUPPORTED_DATE = "2000-01-01";
 
 	private static final Logger logger = LoggerFactory.getLogger(FixerIOServiceAdapterImpl.class);
@@ -32,7 +36,6 @@ public class FixerIOServiceAdapterImpl implements ExternalCurrencyServiceAdapter
 
 	private RestTemplate restTemplate;
 
-	
 	public FixerIOServiceAdapterImpl(RestTemplateBuilder restTemplateBuilder) {
 		super();
 		this.restTemplate = restTemplateBuilder.build();
@@ -40,13 +43,12 @@ public class FixerIOServiceAdapterImpl implements ExternalCurrencyServiceAdapter
 	}
 
 	@Cacheable("exchangeRate")
-	public BigDecimal getCurrencyExchangeRate(String[] params)throws ConversionRateNotFoundException, ExternalServiceNotRespondingException {
+	public BigDecimal getCurrencyExchangeRate(String[] params)
+			throws ConversionRateNotFoundException, ExternalServiceNotRespondingException {
 		validateRequestParams(params);
 		String response = invokeExternalService(params);
 		return deriveExchangeRateFromResponse(params, response);
 	}
-
-
 
 	private String invokeExternalService(String[] params) throws ExternalServiceNotRespondingException {
 		logger.info("Invoking api.fixer.io with parameters::" + Arrays.toString(params));
@@ -55,14 +57,13 @@ public class FixerIOServiceAdapterImpl implements ExternalCurrencyServiceAdapter
 			logger.info("Received response from api.fixer.io");
 			return response;
 		} catch (Exception e) {
-			logger.error("Exception occured while calling api.fixer.io ::",e);
+			logger.error("Exception occured while calling api.fixer.io ::", e);
 			throw new ExternalServiceNotRespondingException("api.fixer.io");
 		}
 	}
 
-	
-	
-	private BigDecimal deriveExchangeRateFromResponse(String[] params, String response) throws ConversionRateNotFoundException {
+	private BigDecimal deriveExchangeRateFromResponse(String[] params, String response)
+			throws ConversionRateNotFoundException {
 		JSONObject rate = new JSONObject(response).getJSONObject(JSON_RATE_KEY);
 
 		if (rate.has(params[2]))
@@ -71,30 +72,27 @@ public class FixerIOServiceAdapterImpl implements ExternalCurrencyServiceAdapter
 			throw new ConversionRateNotFoundException(params);
 	}
 
-	
-	
 	private void validateRequestParams(String[] params) throws ConversionRateNotFoundException {
-		validateRequestDate(params[0]);		
+		validateRequestDate(params[0]);
 	}
 
-	
 	private void validateRequestDate(String requestedDate) throws ConversionRateNotFoundException {
 		SimpleDateFormat sdf = new SimpleDateFormat(SUPPORTED_DATE_FORMAT);
 		try {
-			if(sdf.parse(requestedDate).before(sdf.parse(MIN_SUPPORTED_DATE)))
-				throw new ConversionRateNotFoundException("External Service does not support queries before "+ MIN_SUPPORTED_DATE);
+			if (sdf.parse(requestedDate).before(sdf.parse(MIN_SUPPORTED_DATE)))
+				throw new ConversionRateNotFoundException(
+						"External Service does not support queries before " + MIN_SUPPORTED_DATE);
 		} catch (ParseException e) {
 			throw new ConversionRateNotFoundException("Invalid Date Format");
 		}
-	}	
-	
+	}
 
 	private void setTimeOutForRestTemplate() {
 		if (restTemplate.getRequestFactory() instanceof HttpComponentsClientHttpRequestFactory) {
 			HttpComponentsClientHttpRequestFactory rf = (HttpComponentsClientHttpRequestFactory) restTemplate
 					.getRequestFactory();
 			rf.setReadTimeout(15 * 1000);
-			rf.setConnectTimeout(15 * 1000);		
+			rf.setConnectTimeout(15 * 1000);
 		}
 	}
 

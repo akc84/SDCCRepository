@@ -45,6 +45,8 @@ public class TestConstants {
 	public static final String FORM_FIELD_TARGET_CURRENCY = "targetCurrency";
 
 	public static final String FORM_FIELD_SOURCE_CURRENCY = "sourceCurrency";
+	
+	public static final String FORM_FIELD_COVERSION_DATE = "conversionDate";
 
 	public static final String CURRENCY_CONVERTER_FORM = "currencyConverterForm";
 	
@@ -53,5 +55,12 @@ public class TestConstants {
 	public static final String TEST_USER_NAME2 = "jane";
 	
 	public static final String TEST_QUERY_STRING = "NewlyInsertedQueryString";	
+	
+	public static final String WEB_INF_LOGIN_JSP = "/WEB-INF/login.jsp";
+
+	public static final String WEB_INF_REGISTER_JSP = "/WEB-INF/register.jsp";	
+	
+	public static final String WEB_INF_CURRENCY_CONVERTER_JSP = "/WEB-INF/currencyConverter.jsp";
+	
 	
 }

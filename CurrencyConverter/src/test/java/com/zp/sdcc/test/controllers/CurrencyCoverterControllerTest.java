@@ -13,8 +13,10 @@ import static com.zp.sdcc.test.TestConstants.ERROR_NOT_NULL;
 import static com.zp.sdcc.test.TestConstants.ERROR_SIZE;
 import static com.zp.sdcc.test.TestConstants.ERROR_TYPE_MISMATCH;
 import static com.zp.sdcc.test.TestConstants.FORM_FIELD_AMOUNT_TO_CONVERT;
+import static com.zp.sdcc.test.TestConstants.FORM_FIELD_COVERSION_DATE;
 import static com.zp.sdcc.test.TestConstants.FORM_FIELD_SOURCE_CURRENCY;
 import static com.zp.sdcc.test.TestConstants.FORM_FIELD_TARGET_CURRENCY;
+import static com.zp.sdcc.test.TestConstants.WEB_INF_CURRENCY_CONVERTER_JSP;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
@@ -57,397 +60,295 @@ import com.zp.sdcc.services.UserService;
 @WebMvcTest(value = CurrencyConverterController.class, includeFilters = @Filter(classes = EnableWebSecurity.class))
 public class CurrencyCoverterControllerTest {
 
-
 	@Autowired
 	MockMvc mockMvc;
-	
+
 	@MockBean
 	CurrencyConversionDelegatorService currencyServiceDelegator;
-	
+
 	@MockBean
 	UserService userService;
-	
+
 	@MockBean
 	AuditHistoryService auditHistoryService;
-	
-    @MockBean
-    private UserDetailsService userDetailsService;	
-	
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_AmountToConvertNull_ValidationErrorOnAmountToConvert() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.remove(FORM_FIELD_AMOUNT_TO_CONVERT);
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_AMOUNT_TO_CONVERT, 
-    														ERROR_NOT_NULL));
-    }
+	@MockBean
+	private UserDetailsService userDetailsService;
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_AmountToConvertNegativeNumber_ValidationErrorOnAmountToConvert() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT,Arrays.asList("-1"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+	private MultiValueMap<String, String> requestParameters;
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_AMOUNT_TO_CONVERT, 
-    														"DecimalMin"));
-    }    
-    
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_AmountToConvertLargerThan11Digits_ValidationErrorOnAmountToConvert() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT,Arrays.asList("123456789012"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+	@Before
+	public void setup() {
+		requestParameters = populateRequestParameters();
+		mockAuditHistory();
+	}
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_AMOUNT_TO_CONVERT, 
-    														ERROR_DIGITS));
-    }    
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_AmountToConvertNull_ValidationErrorOnAmountToConvert() throws Exception {
+		// Arrange
+		requestParameters.remove(FORM_FIELD_AMOUNT_TO_CONVERT);
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_AmountToConvertMoreThan2DecimalDigits_ValidationErrorOnAmountToConvert() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT,Arrays.asList("123456789.012"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_AMOUNT_TO_CONVERT, 
-    														ERROR_DIGITS));
-    }      
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_AMOUNT_TO_CONVERT,
+				ERROR_NOT_NULL));
+	}
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_AmountToConvertContainsInvalidCharacters_ValidationErrorOnAmountToConvert() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT,Arrays.asList("12asdsad.012"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_AmountToConvertNegativeNumber_ValidationErrorOnAmountToConvert() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT, Arrays.asList("-1"));
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_AMOUNT_TO_CONVERT, 
-    														ERROR_TYPE_MISMATCH));
-    }       
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_AmountToConvertBlankString_ValidationErrorOnAmountToConvert() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT,Arrays.asList(BLANK_STRING));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_AMOUNT_TO_CONVERT,
+				"DecimalMin"));
+	}
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrors(CURRENCY_CONVERTER_FORM, 
-    													 FORM_FIELD_AMOUNT_TO_CONVERT));
-    } 
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_AmountToConvertLargerThan11Digits_ValidationErrorOnAmountToConvert() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT, Arrays.asList("123456789012"));
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_SourceCurrencyBlankString_ValidationErrorOnSourceCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_SOURCE_CURRENCY,Arrays.asList(BLANK_STRING));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_SOURCE_CURRENCY, 
-    														ERROR_NOT_BLANK));
-    } 
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_AMOUNT_TO_CONVERT,
+				ERROR_DIGITS));
+	}
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_SourceCurrencyLessThan3Characters_ValidationErrorOnSourceCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_SOURCE_CURRENCY,Arrays.asList("EU"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_AmountToConvertMoreThan2DecimalDigits_ValidationErrorOnAmountToConvert() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT, Arrays.asList("123456789.012"));
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_SOURCE_CURRENCY, 
-    														ERROR_SIZE));
-    }
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_SourceCurrencyMoreThan3Characters_ValidationErrorOnSourceCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_SOURCE_CURRENCY,Arrays.asList("EURO"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_AMOUNT_TO_CONVERT,
+				ERROR_DIGITS));
+	}
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_SOURCE_CURRENCY, 
-    														ERROR_SIZE));
-    }   
-    
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_SourceCurrencyNull_ValidationErrorOnSourceCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.remove(FORM_FIELD_SOURCE_CURRENCY);
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_AmountToConvertContainsInvalidCharacters_ValidationErrorOnAmountToConvert()
+			throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT, Arrays.asList("12asdsad.012"));
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_SOURCE_CURRENCY, 
-    														ERROR_NOT_BLANK));
-    } 
- 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_TargetCurrencyNull_ValidationErrorOnTargetCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.remove(FORM_FIELD_TARGET_CURRENCY);
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_TARGET_CURRENCY, 
-    														ERROR_NOT_BLANK));
-    } 
- 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_TargetCurrencyBlankString_ValidationErrorOnTargetCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_TARGET_CURRENCY,Arrays.asList(BLANK_STRING));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_AMOUNT_TO_CONVERT,
+				ERROR_TYPE_MISMATCH));
+	}
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_TARGET_CURRENCY, 
-    														ERROR_NOT_BLANK));
-    } 
-  
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_TargetCurrencyLessThan3Characters_ValidationErrorOnTargetCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_TARGET_CURRENCY,Arrays.asList("EU"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_AmountToConvertBlankString_ValidationErrorOnAmountToConvert() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT, Arrays.asList(BLANK_STRING));
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_TARGET_CURRENCY, 
-    														ERROR_SIZE));
-    } 
-    
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_TargetCurrencyMoreThan3Characters_ValidationErrorOnTargetCurrency() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	requestParameters.put(FORM_FIELD_TARGET_CURRENCY,Arrays.asList("EURO"));
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    	//Assert
-    	result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, 
-    														FORM_FIELD_TARGET_CURRENCY, 
-    														ERROR_SIZE));
-    }     
-    
- 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void getRequest_NoParamters_ForwardsToCurrencyConverterPageNoErrors() throws Exception
-    {
-    	//Arrange
-    	mockAuditHistory();
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(get(CURRENCY_CONVERTER_REQUEST_MAPPING));
+		// Assert
+		result.andExpect(model().attributeHasFieldErrors(CURRENCY_CONVERTER_FORM, FORM_FIELD_AMOUNT_TO_CONVERT));
+	}
 
-    	//Assert
-    	result.andExpect(status().isOk())
-    		  .andExpect(model().attributeExists(CURRENCY_CONVERTER_FORM))
-    		  .andExpect(model().hasNoErrors())
-    		  .andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
-    		  .andExpect(handler().handlerType(CurrencyConverterController.class))
-    		  .andExpect(handler().methodName("currencyConverterMapping"))
-    		  .andExpect(forwardedUrl("/WEB-INF/currencyConverter.jsp"));
-    }     
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_SourceCurrencyBlankString_ValidationErrorOnSourceCurrency() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_SOURCE_CURRENCY, Arrays.asList(BLANK_STRING));
 
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_NoParamters_ForwardsToCurrencyConverterPageWithErrors() throws Exception
-    {
-    	//Arrange
-    	mockAuditHistory();
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING));
+		// Act
+		ResultActions result = postCurrencyConverterForm();
 
-    	//Assert
-    	result.andExpect(status().isOk())
-    		  .andExpect(model().attributeExists(CURRENCY_CONVERTER_FORM))
-    		  .andExpect(model().hasErrors())
-    		  .andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
-    		  .andExpect(handler().handlerType(CurrencyConverterController.class))
-    		  .andExpect(handler().methodName("handleCurrencyConversionRequest"))
-    		  .andExpect(forwardedUrl("/WEB-INF/currencyConverter.jsp"));
-    }       
-    
-    @Test
-    @WithMockUser(username = DEFAULT_USER)
-    public void postRequest_ValidParamters_ReturnsResult() throws Exception
-    {
-    	//Arrange
-    	MultiValueMap<String,String> requestParameters = populateRequestParameters();
-    	mockAuditHistory();
-    	when(currencyServiceDelegator.performCurrencyConversion(Matchers.any(CurrencyConversionVO.class)))
-    	.thenAnswer((InvocationOnMock invocation) -> (CurrencyConversionVO)invocation.getArguments()[0]);
-    	
-    	
-    	//Act
-    	ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
-    										   .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-    										   .params(requestParameters));
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_SOURCE_CURRENCY,
+				ERROR_NOT_BLANK));
+	}
 
-    	//Assert
-    	result.andExpect(status().isOk())
-    		  .andExpect(model().attributeExists("result"))
-    		  .andExpect(model().hasNoErrors())
-    		  .andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
-    		  .andExpect(handler().handlerType(CurrencyConverterController.class))
-    		  .andExpect(handler().methodName("handleCurrencyConversionRequest"))
-    		  .andExpect(forwardedUrl("/WEB-INF/currencyConverter.jsp"));
-    } 
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_SourceCurrencyLessThan3Characters_ValidationErrorOnSourceCurrency() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_SOURCE_CURRENCY, Arrays.asList("EU"));
 
-    private void mockAuditHistory() {
-		AuditHistory history = mock(AuditHistory.class);
-    	when(history.getFormattedString()).thenReturn(anyString());
-    	when(auditHistoryService.getAuditHistoryForUser(DEFAULT_USER)).thenReturn(history);
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(
+				model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_SOURCE_CURRENCY, ERROR_SIZE));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_SourceCurrencyMoreThan3Characters_ValidationErrorOnSourceCurrency() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_SOURCE_CURRENCY, Arrays.asList("EURO"));
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(
+				model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_SOURCE_CURRENCY, ERROR_SIZE));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_SourceCurrencyNull_ValidationErrorOnSourceCurrency() throws Exception {
+		// Arrange
+		requestParameters.remove(FORM_FIELD_SOURCE_CURRENCY);
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_SOURCE_CURRENCY,
+				ERROR_NOT_BLANK));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_TargetCurrencyNull_ValidationErrorOnTargetCurrency() throws Exception {
+		// Arrange
+		requestParameters.remove(FORM_FIELD_TARGET_CURRENCY);
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_TARGET_CURRENCY,
+				ERROR_NOT_BLANK));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_TargetCurrencyBlankString_ValidationErrorOnTargetCurrency() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_TARGET_CURRENCY, Arrays.asList(BLANK_STRING));
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_TARGET_CURRENCY,
+				ERROR_NOT_BLANK));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_TargetCurrencyLessThan3Characters_ValidationErrorOnTargetCurrency() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_TARGET_CURRENCY, Arrays.asList("EU"));
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(
+				model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_TARGET_CURRENCY, ERROR_SIZE));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_TargetCurrencyMoreThan3Characters_ValidationErrorOnTargetCurrency() throws Exception {
+		// Arrange
+		requestParameters.put(FORM_FIELD_TARGET_CURRENCY, Arrays.asList("EURO"));
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(
+				model().attributeHasFieldErrorCode(CURRENCY_CONVERTER_FORM, FORM_FIELD_TARGET_CURRENCY, ERROR_SIZE));
 	}
 
 
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void getRequest_NoParamters_ForwardsToCurrencyConverterPageNoErrors() throws Exception {
+		// Arrange
+
+		// Act
+		ResultActions result = mockMvc.perform(get(CURRENCY_CONVERTER_REQUEST_MAPPING));
+
+		// Assert
+		result.andExpect(status().isOk()).andExpect(model().attributeExists(CURRENCY_CONVERTER_FORM))
+				.andExpect(model().hasNoErrors()).andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
+				.andExpect(handler().handlerType(CurrencyConverterController.class))
+				.andExpect(handler().methodName("currencyConverterMapping"))
+				.andExpect(forwardedUrl(WEB_INF_CURRENCY_CONVERTER_JSP));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_NoParamters_ForwardsToCurrencyConverterPageWithErrors() throws Exception {
+		// Arrange
+
+		// Act
+		ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING));
+
+		// Assert
+		result.andExpect(status().isOk()).andExpect(model().attributeExists(CURRENCY_CONVERTER_FORM))
+				.andExpect(model().hasErrors()).andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
+				.andExpect(handler().handlerType(CurrencyConverterController.class))
+				.andExpect(handler().methodName("handleCurrencyConversionRequest"))
+				.andExpect(forwardedUrl(WEB_INF_CURRENCY_CONVERTER_JSP));
+	}
+
+	@Test
+	@WithMockUser(username = DEFAULT_USER)
+	public void postRequest_ValidParamters_ReturnsResult() throws Exception {
+		// Arrange
+		when(currencyServiceDelegator.performCurrencyConversion(Matchers.any(CurrencyConversionVO.class)))
+				.thenAnswer((InvocationOnMock invocation) -> (CurrencyConversionVO) invocation.getArguments()[0]);
+
+		// Act
+		ResultActions result = postCurrencyConverterForm();
+
+		// Assert
+		result.andExpect(status().isOk()).andExpect(model().attributeExists("result")).andExpect(model().hasNoErrors())
+				.andExpect(view().name(CURRENCY_CONVERTER_RESPONSE_MAPPING))
+				.andExpect(handler().handlerType(CurrencyConverterController.class))
+				.andExpect(handler().methodName("handleCurrencyConversionRequest"))
+				.andExpect(forwardedUrl(WEB_INF_CURRENCY_CONVERTER_JSP));
+	}
+
+	private ResultActions postCurrencyConverterForm() throws Exception {
+		ResultActions result = mockMvc.perform(post(CURRENCY_CONVERTER_REQUEST_MAPPING)
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED).params(requestParameters));
+		return result;
+	}
+
+	private void mockAuditHistory() {
+		AuditHistory history = mock(AuditHistory.class);
+		when(history.getFormattedString()).thenReturn(anyString());
+		when(auditHistoryService.getAuditHistoryForUser(DEFAULT_USER)).thenReturn(history);
+	}
+
 	private MultiValueMap<String, String> populateRequestParameters() {
-		MultiValueMap<String,String> requestParameters = new LinkedMultiValueMap<>();
-		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT,Arrays.asList("1232.12"));
-		requestParameters.put(FORM_FIELD_SOURCE_CURRENCY,Arrays.asList(EUR));
+		MultiValueMap<String, String> requestParameters = new LinkedMultiValueMap<>();
+		requestParameters.put(FORM_FIELD_AMOUNT_TO_CONVERT, Arrays.asList("1232.12"));
+		requestParameters.put(FORM_FIELD_SOURCE_CURRENCY, Arrays.asList(EUR));
 		requestParameters.put(FORM_FIELD_TARGET_CURRENCY, Arrays.asList(GBP));
-		requestParameters.put("conversionDate",Arrays.asList("2010-01-10"));
-		
+		requestParameters.put(FORM_FIELD_COVERSION_DATE, Arrays.asList("2010-01-10"));
+
 		return requestParameters;
-	}	
+	}
 }

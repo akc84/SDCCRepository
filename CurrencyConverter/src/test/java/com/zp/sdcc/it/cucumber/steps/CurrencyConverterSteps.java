@@ -1,5 +1,11 @@
 package com.zp.sdcc.it.cucumber.steps;
 
+import static com.zp.sdcc.common.CurrencyConverterConstants.PASSWORD;
+import static com.zp.sdcc.common.CurrencyConverterConstants.USERNAME;
+import static com.zp.sdcc.test.TestConstants.FORM_FIELD_AMOUNT_TO_CONVERT;
+import static com.zp.sdcc.test.TestConstants.FORM_FIELD_COVERSION_DATE;
+import static com.zp.sdcc.test.TestConstants.FORM_FIELD_SOURCE_CURRENCY;
+import static com.zp.sdcc.test.TestConstants.FORM_FIELD_TARGET_CURRENCY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -29,8 +35,8 @@ public class CurrencyConverterSteps extends AbstractStepDef {
 	@And("^the following login credentials are entered$")
     public void andLoginCredentialsEntered(List<List<String>> loginInfo)
     {
-		browser.findElement(By.name("username")).sendKeys(loginInfo.get(1).get(0));
-		browser.findElement(By.name("password")).sendKeys(loginInfo.get(1).get(1));
+		browser.findElement(By.name(USERNAME)).sendKeys(loginInfo.get(1).get(0));
+		browser.findElement(By.name(PASSWORD)).sendKeys(loginInfo.get(1).get(1));
     }
 
 	@And("^the submit button is clicked$")
@@ -42,27 +48,27 @@ public class CurrencyConverterSteps extends AbstractStepDef {
 	@When("^the amount is entered as (\\d+)$")
     public void andAmountEntered(String amount)
     {
-		browser.findElement(By.name("amountToConvert")).clear();
-		browser.findElement(By.name("amountToConvert")).sendKeys(amount);
+		browser.findElement(By.name(FORM_FIELD_AMOUNT_TO_CONVERT)).clear();
+		browser.findElement(By.name(FORM_FIELD_AMOUNT_TO_CONVERT)).sendKeys(amount);
     }
 	
 	@And("^the source currency is selected as (...)$")
     public void andSourceCurrencySelected(String fromCurrency)
     {
-		browser.findElement(By.name("sourceCurrency")).sendKeys(fromCurrency);
+		browser.findElement(By.name(FORM_FIELD_SOURCE_CURRENCY)).sendKeys(fromCurrency);
     }		
 
 	@And("^the target currency is selected as (...)$")
     public void andTargetCurrencySelected(String toCurrency)
     {
-		browser.findElement(By.name("targetCurrency")).sendKeys(toCurrency);
+		browser.findElement(By.name(FORM_FIELD_TARGET_CURRENCY)).sendKeys(toCurrency);
     }
 	
 	@And("^the date is entered as (.*)$")
     public void andDateEntered(String conversionDate)
     {
-		browser.findElement(By.name("conversionDate")).clear();
-		browser.findElement(By.name("conversionDate")).sendKeys(conversionDate);
+		browser.findElement(By.name(FORM_FIELD_COVERSION_DATE)).clear();
+		browser.findElement(By.name(FORM_FIELD_COVERSION_DATE)).sendKeys(conversionDate);
     }
 	
 	@And("^convert button is clicked$")

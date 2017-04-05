@@ -11,7 +11,11 @@ import org.springframework.stereotype.Component;
 import com.zp.sdcc.entities.CurrencyConversionVO;
 import com.zp.sdcc.exceptions.ConversionRateNotFoundException;
 import com.zp.sdcc.exceptions.ExternalServiceNotRespondingException;
-
+/**
+ * @author AKC
+ * Delegates call to ExternalCurrencyServiceAdapter to get exchangeRate.
+ * Performs conversion, audit and returns result.
+ */
 @Component
 public class CurrencyConversionDelegatorService {
 
@@ -33,8 +37,10 @@ public class CurrencyConversionDelegatorService {
 
 	public CurrencyConversionVO performCurrencyConversion(CurrencyConversionVO conversionInfo)
 			throws ConversionRateNotFoundException, ExternalServiceNotRespondingException {
+
 		BigDecimal exchangeRate = areSourceTargetCurrencySame(conversionInfo) ? BigDecimal.ONE
 				: externalService.getCurrencyExchangeRate(getParameters(conversionInfo));
+
 		logger.debug("ExchangeRate::" + exchangeRate.toString());
 		deriveConvertedAmount(conversionInfo, exchangeRate);
 		performAudit(conversionInfo);

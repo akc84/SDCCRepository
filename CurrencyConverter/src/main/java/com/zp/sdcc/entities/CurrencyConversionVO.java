@@ -15,35 +15,36 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import static com.zp.sdcc.common.CurrencyConverterUtil.*;
 
+/**
+ * @author AKC
+ * DTO for request and result on /currencyConverter.
+ */
 public class CurrencyConversionVO {
 
 	@NotBlank
 	@Size(max = 3, min = 3)
 	private String sourceCurrency;
-	
+
 	@NotNull
 	@DecimalMin("0.0")
-	@Digits(integer=11,fraction=2)
+	@Digits(integer = 11, fraction = 2)
 	private BigDecimal amountToConvert;
-	
+
 	@NotBlank
 	@Size(max = 3, min = 3)
 	private String targetCurrency;
-	
 
 	private BigDecimal convertedAmount;
-    
-	@Past
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date conversionDate; 
 
-	
+	@Past
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date conversionDate;
+
 	public CurrencyConversionVO() {
 		super();
 	}
 
-	public CurrencyConversionVO(String fromCurrency, BigDecimal fromAmount, String toCurrency,
-								Date conversionDate) {
+	public CurrencyConversionVO(String fromCurrency, BigDecimal fromAmount, String toCurrency, Date conversionDate) {
 		super();
 		this.sourceCurrency = fromCurrency;
 		this.amountToConvert = fromAmount;
@@ -94,11 +95,9 @@ public class CurrencyConversionVO {
 
 	public String getAuditString() {
 		StringBuilder auditString = new StringBuilder("Query:::").append(getFormattedAmount(getAmountToConvert()))
-										.append(" ").append(getSourceCurrency()).append("=>")
-										.append(getTargetCurrency()).append(" as on ")
-										.append(getFormattedDate(getConversionDate()))
-										.append("    Result:::").append(getFormattedAmount(getConvertedAmount()))
-										.append(" ").append(getTargetCurrency());
-		return auditString.toString();		
-	}	
+				.append(" ").append(getSourceCurrency()).append("=>").append(getTargetCurrency()).append(" as on ")
+				.append(getFormattedDate(getConversionDate())).append("    Result:::")
+				.append(getFormattedAmount(getConvertedAmount())).append(" ").append(getTargetCurrency());
+		return auditString.toString();
+	}
 }

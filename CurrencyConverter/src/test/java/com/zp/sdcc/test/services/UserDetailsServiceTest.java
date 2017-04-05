@@ -19,61 +19,56 @@ import com.zp.sdcc.dao.UserRepository;
 import com.zp.sdcc.entities.User;
 import com.zp.sdcc.services.UserDetailsServiceImpl;
 
-
 public class UserDetailsServiceTest {
-
 
 	private UserDetailsService userDetailsService;
 
 	private UserRepository userRepository;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
-    @Before
-    public void setUp(){
-    	userRepository = mock(UserRepository.class);
-    	userDetailsService = new UserDetailsServiceImpl(userRepository);
-    }
-    
+	@Before
+	public void setUp() {
+		userRepository = mock(UserRepository.class);
+		userDetailsService = new UserDetailsServiceImpl(userRepository);
+	}
+
 	@Test
-	public void loadUserByUsername_ExistingUsername_ReturnsUserDetails(){
+	public void loadUserByUsername_ExistingUsername_UserDetailsReturned() {
 
-		//Arrange
+		// Arrange
 		User user = createUser(TEST_USER_NAME2, PASSWORD);
 		when(userRepository.findOne(TEST_USER_NAME2)).thenReturn(user);
-		
-		//Act
+
+		// Act
 		UserDetails result = userDetailsService.loadUserByUsername(TEST_USER_NAME2);
-		
-		//Assert
-		assertThat(result.getPassword()).isEqualTo(PASSWORD);		
-		
+
+		// Assert
+		assertThat(result.getPassword()).isEqualTo(PASSWORD);
+
 	}
 
 	@Test
-	
-	public void loadUserByUsername_NewUsername_ThrowsUsernameNotFoundException(){
+	public void loadUserByUsername_NewUsername_UsernameNotFoundExceptionThrown() {
 
-		//Arrange
+		// Arrange
 		when(userRepository.findOne(TEST_USER_NAME)).thenReturn(null);
 		thrown.expect(UsernameNotFoundException.class);
-		
-		//Act
+
+		// Act
 		userDetailsService.loadUserByUsername(TEST_USER_NAME);
-		
-		//Assert
-		//the thrown exception
-		
+
+		// Assert
+		// the thrown exception
+
 	}
-	
+
 	private User createUser(String username, String password) {
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
 		return user;
 	}
-
-	
 
 }
