@@ -104,7 +104,7 @@ The TTL and Cache size may be configured from the application.properties with th
 
 `spring.cache.caffeine.spec=maximumSize=100,expireAfterAccess=300s`
 
-
+This can be monitored in the /metrics actuator under `cache.exchangeRate.size`
 
 ## Known Limitation
 
